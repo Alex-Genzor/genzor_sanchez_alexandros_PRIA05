@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Netcode;
@@ -14,7 +15,8 @@ public class UIManager : MonoBehaviour
     void Start()
     {
         ShowConnectionPanel();
-        
+        GameStateManager.OnGameStateChanged += GameStateChangedCallback;
+
     }
 
     // Update is called once per frame
@@ -23,6 +25,28 @@ public class UIManager : MonoBehaviour
         
         
     }
+
+
+
+    private void GameStateChangedCallback(GameStateManager.State gameState)
+    {
+        switch (gameState)
+        {
+            case GameStateManager.State.Game:
+                ShowGamePanel();
+                
+                break;
+            
+        }
+        
+    }
+
+    private void OnDestroy()
+    {
+        GameStateManager.OnGameStateChanged -= GameStateChangedCallback;
+        
+    }
+
 
     private void ShowConnectionPanel()
     {
